@@ -6,7 +6,7 @@ Project Lead: Michael Xu \
 Data Engineer: Mohamed Yattara \
 ML Engineer: Shao Zhu \
 App Engineer: Jiajie Chen \
-Analyst / Writer: Jackson\
+Analyst / Writer: Jackson
 
 
 ## Description
