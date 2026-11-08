@@ -2,11 +2,11 @@
 
 ## Team Members
 
-Project Lead: Michael Xu 
-Data Engineer: Mohamed Yattara 
-ML Engineer: Shao Zhu 
-App Engineer: Jiajie Chen 
-Analyst / Writer: Jackson
+Project Lead: Michael Xu \
+Data Engineer: Mohamed Yattara \
+ML Engineer: Shao Zhu \
+App Engineer: Jiajie Chen \
+Analyst / Writer: Jackson\
 
 
 ## Description
