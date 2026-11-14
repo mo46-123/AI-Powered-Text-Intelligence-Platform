@@ -21,9 +21,10 @@ Group sample uses random seed 46.
 
 ```
 pip install pandas scikit-learn matplotlib
-python make_sample.py
-python preprocess.py
-python split_data.py
+python make_sample.py     # 50,000-review sample (seed 46)
+python preprocess.py      # clean text, 3-class labels, remove duplicate texts
+python split_data.py      # stratified 70/10/20 train/val/test split
+python features.py        # BoW + TF-IDF features and saved vectorizers
 ```
 
 You should get train 32,418 / val 4,632 / test 9,263. If your sizes match, you have the same split as the team.
