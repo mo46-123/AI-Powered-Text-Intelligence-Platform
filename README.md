@@ -21,7 +21,7 @@ cd AI-Powered-Text-Intelligence-Platform
 ```
 ### Install dependencies
 ```
-# (optional) get up virtual environment
+# (optional) set up virtual environment
 conda create -n text-intelligence python=3.14
 conda activate text-intelligence
 # install deps
@@ -38,7 +38,7 @@ AI-Powered-Text-Intelligence-Platform/
         |-naive_bayes.joblib
 ```
 
-### demo 
+### Demo 
 ```
 python model/naive-bayes/demo.py -c "Love the Pill Pockets. We have three dogs. Two of them will let us put the pill in their throat ..."
 python model/naive-bayes/demo.py -cf data/clean_reviews.csv
@@ -55,7 +55,7 @@ python features.py        # BoW + TF-IDF features and saved vectorizers
 
 You should get train 32,418 / val 4,632 / test 9,263. If your sizes match, you have the same split as the team.
 
-### training 
+### Training 
 Make sure you have prepared the data like the following:
 
 ```text
