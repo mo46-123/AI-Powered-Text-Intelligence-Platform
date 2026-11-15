@@ -17,7 +17,7 @@ An app that uses AI to predict whether a review is positive, negative, or neutra
 ### Setup
 ```
 git clone https://github.com/mo46-123/AI-Powered-Text-Intelligence-Platform.git
-cd AI-Powered-Text_Intelligence-Platform
+cd AI-Powered-Text-Intelligence-Platform
 ```
 ### Install dependencies
 ```
@@ -28,13 +28,15 @@ conda activate text-intelligence
 pip install -r requirements.txt
 ```
 ### Download pre-trained classifier 
-1. downlaod `naive_bayes_vectorizer.joblib` and `naive_bayes.joblib` from: https://drive.google.com/drive/folders/1360TgaawgRQdyROQfkwo9Z-N39VzVEpX?usp=sharing
+1. download `naive_bayes_vectorizer.joblib` and `naive_bayes.joblib` from: https://drive.google.com/drive/folders/1360TgaawgRQdyROQfkwo9Z-N39VzVEpX?usp=sharing
 2. create and place them under:
-AI-Powered-Text-Intelligence-Plateform/
-    |
+
+```text
+AI-Powered-Text-Intelligence-Platform/
     |-models/
         |-naive_bayes_vectorizer.joblib
         |-naive_bayes.joblib
+```
 
 ### demo 
 ```
@@ -54,14 +56,16 @@ python features.py        # BoW + TF-IDF features and saved vectorizers
 You should get train 32,418 / val 4,632 / test 9,263. If your sizes match, you have the same split as the team.
 
 ### training 
-Make sure you have prepared the data like the following
-AI-Powered-Text-Intelligence-Plateform/
-    |
+Make sure you have prepared the data like the following:
+
+```text
+AI-Powered-Text-Intelligence-Platform/
     |-data/
-        |
-        | - test.csv
-        | - train.csv
-        | - val.csv
+        |-test.csv
+        |-train.csv
+        |-val.csv
+```
+
 then run
 ```
 python model//naive-bayes/train.py
