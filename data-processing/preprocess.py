@@ -13,10 +13,10 @@ def clean_text(s):
 
 def to_sentiment(score):
     if score <= 2:
-        return "negative"
-    if score == 3:
-        return "neutral"
-    return "positive"
+        return "0" # poor
+    elif score <= 4:
+        return "1" # good 
+    return "2" # excellent
 
 df = pd.read_csv(RAW_PATH)
 print("Raw rows:", len(df))
