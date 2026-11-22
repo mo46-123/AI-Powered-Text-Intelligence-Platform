@@ -5,10 +5,10 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import GaussianNB
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.append(str(REPO_ROOT))
 
-from evaluation import evaluate, to_dense
+from model.classic.evaluation import evaluate, to_dense
 from model.utils import report_metrices, load_data, save_classic_cls
 
 def train_cls(x, y):
