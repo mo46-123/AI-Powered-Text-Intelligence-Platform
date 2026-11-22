@@ -1,18 +1,15 @@
-from sklearn.naive_bayes import GaussianNB, ComplementNB 
-import joblib
-import os
-from pathlib import Path
+import sys
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
+from pathlib import Path
 import pandas as pd 
-from evaluation import evaluate, report_metrices, to_dense
-import json
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import GaussianNB
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.append(str(REPO_ROOT))
 
-
-def load_data(name):
-    return pd.read_csv(REPO_ROOT / 'data' / f"{name}.csv")
+from evaluation import evaluate, to_dense
+from model.utils import report_metrices, load_data, save_classic_cls
 
 def train_cls(x, y):
     cls = GaussianNB()
@@ -93,15 +90,4 @@ if __name__ == '__main__':
     metrices = test(best_model, best_vectorizer)
 
     # save 
-    models_dir = REPO_ROOT / "models"
-    models_dir.mkdir(parents=True, exist_ok=True)
-
-    with open(models_dir / "naive_bayes_config.json", 'w') as f:
-        json.dump(best_config, f, indent=4)
-    
-    with open(models_dir / 'test_result.json', 'w') as f:
-        json.dump(metrices, f, indent=4)
-
-    joblib.dump(best_model, models_dir / 'naive_bayes.joblib')
-    joblib.dump(best_vectorizer, models_dir / 'naive_bayes_vectorizer.joblib')
-   
+    save_classic_cls(best_config, metrices, best_model, best_vectorizer)
