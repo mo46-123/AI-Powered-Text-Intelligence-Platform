@@ -1,7 +1,7 @@
 from pathlib import Path
 import argparse
 import pandas as pd
-from evaluation import evaluate
+from shared import evaluate
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MODEL_FILE = REPO_ROOT / "models" / "naive_bayes.joblib"

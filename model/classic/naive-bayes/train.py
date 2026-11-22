@@ -8,23 +8,13 @@ from sklearn.naive_bayes import GaussianNB
 REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.append(str(REPO_ROOT))
 
-from model.classic.evaluation import evaluate, to_dense
-from model.utils import report_metrices, load_data, save_classic_cls
+from model.classic.shared import evaluate, to_dense, save_cls, get_vocab, test
+from model.utils import report_metrices, load_data
 
 def train_cls(x, y):
     cls = GaussianNB()
     cls.fit(to_dense(x), y)
     return cls
-
-def get_vocab(k, x_full, tfidf_full):
-    # get idx of vocabs with heighest average tfidf
-    term_scores = np.asarray(x_full.mean(axis=0)).ravel()
-    top_idx = np.argsort(term_scores)[-k:]
-
-    # restore idx to vocab
-    idx_to_term = {i: t for t, i in tfidf_full.vocabulary_.items()}
-    return sorted(idx_to_term[i] for i in top_idx)
-
 
 def full_training(n_trial = 10, k_min=500, k_max=1500):
     tfidf_full = TfidfVectorizer(min_df=3)
@@ -73,13 +63,6 @@ def full_training(n_trial = 10, k_min=500, k_max=1500):
 
     return config[str(best_k)], best_model, best_vectorizer
 
-def test(cls, vectorizer=None, vectorizer_file=None):
-    test_df = load_data('test')
-
-    y_pred = evaluate(test_df['input_text'], cls,
-                      vectorizer=vectorizer, vectorizer_file=vectorizer_file)
-    return report_metrices(test_df['Sentiment'], y_pred)
-
 
 if __name__ == '__main__':
     # train 
@@ -90,4 +73,4 @@ if __name__ == '__main__':
     metrices = test(best_model, best_vectorizer)
 
     # save 
-    save_classic_cls(best_config, metrices, best_model, best_vectorizer)
+    save_cls(best_config, metrices, best_model, best_vectorizer)
