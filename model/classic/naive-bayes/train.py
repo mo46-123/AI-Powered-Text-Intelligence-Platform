@@ -73,4 +73,4 @@ if __name__ == '__main__':
     metrices = test(best_model, best_vectorizer)
 
     # save 
-    save_cls(best_config, metrices, best_model, best_vectorizer)
+    save_cls("naive_bayes", best_config, metrices, best_model, best_vectorizer)
