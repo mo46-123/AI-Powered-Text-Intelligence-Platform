@@ -27,7 +27,8 @@ def evaluate(x, model=None, model_file=None, vectorizer=None,
         tfidf = vectorizer
 
     # get prediction
-    if dense: x = to_dense(tfidf.transform(x))
+    x = tfidf.transform(x)
+    if dense: x = to_dense(x)
     if not batch: x = np.expand_dims(x, axis=0)
     return cls.predict(x)
 
@@ -42,24 +43,25 @@ def get_vocab(k, x_full, tfidf_full):
     return sorted(idx_to_term[i] for i in top_idx)
 
 # test model
-def test(cls, vectorizer=None, vectorizer_file=None):
+def test(cls, vectorizer=None, vectorizer_file=None, dense=True):
     test_df = load_data('test')
 
     y_pred = evaluate(test_df['input_text'], cls,
-                      vectorizer=vectorizer, vectorizer_file=vectorizer_file)
+                      vectorizer=vectorizer, vectorizer_file=vectorizer_file,
+                      dense=dense)
     return report_metrices(test_df['Sentiment'], y_pred)
 
 # model saving
-def save_cls(best_config, metrices, best_model, best_vectorizer):
+def save_cls(name, best_config, metrices, best_model, best_vectorizer):
     # save 
     models_dir = REPO_ROOT / "models"
     models_dir.mkdir(parents=True, exist_ok=True)
 
-    with open(models_dir / "naive_bayes_config.json", 'w') as f:
+    with open(models_dir / f"{name}_config.json", 'w') as f:
         json.dump(best_config, f, indent=4)
     
-    with open(models_dir / 'test_result.json', 'w') as f:
+    with open(models_dir / f'{name}_test_result.json', 'w') as f:
         json.dump(metrices, f, indent=4)
 
-    joblib.dump(best_model, models_dir / 'naive_bayes.joblib')
-    joblib.dump(best_vectorizer, models_dir / 'naive_bayes_vectorizer.joblib')
+    joblib.dump(best_model, models_dir / f'{name}.joblib')
+    joblib.dump(best_vectorizer, models_dir / f'{name}_vectorizer.joblib')
