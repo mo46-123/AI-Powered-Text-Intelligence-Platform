@@ -47,8 +47,8 @@ def report_metrices(y_true, y_pred):
     for name in ('f1', 'precision', 'recall'):
         values = metrics[name]
         print(f"{name.capitalize():<10} per-class {values['per_class']}  "
-              f"macro {values['macro']:.3f}  micro {values['micro']:.3f}  "
-              f"weighted {values['weighted']:.3f}")
+                f"macro {values['macro']:.3f}  micro {values['micro']:.3f}  "
+                f"weighted {values['weighted']:.3f}")
     print(f"{'Accuracy':<10} {metrics['accuracy']:.3f}")
 
     print(f"Confusion Matrix  labels {metrics['labels']}")
