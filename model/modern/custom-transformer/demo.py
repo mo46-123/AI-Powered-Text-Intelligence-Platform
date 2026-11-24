@@ -92,25 +92,6 @@ def build_args(argv=None):
         "--comment-file",
         help="csv file containing a bunch of customer comments"
     )
-
-    parser.add_argument(
-        "--checkpoint",
-        type=Path,
-        default=CHECKPOINT_FILE,
-        help="model weights (default: %(default)s)"
-    )
-    parser.add_argument(
-        "--config",
-        type=Path,
-        default=CONFIG_FILE,
-        help="model hyperparameters (default: %(default)s)"
-    )
-    parser.add_argument(
-        "--tokenizer",
-        type=Path,
-        default=TOKENIZER_FILE,
-        help="trained tokenizer (default: %(default)s)"
-    )
     parser.add_argument(
         "--device",
         help="cpu or cuda (default: cuda when available)"
@@ -131,7 +112,7 @@ def main(argv=None):
     if args.batch_size < 1:
         raise SystemExit("--batch-size must be >= 1")
 
-    model = load_model(args.checkpoint, args.config, args.tokenizer, args.device)
+    model = load_model(CHECKPOINT_FILE, CONFIG_FILE, TOKENIZER_FILE, args.device)
 
     if args.comment_file:
         df = pd.read_csv(args.comment_file)
