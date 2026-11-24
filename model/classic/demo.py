@@ -4,7 +4,7 @@ import pandas as pd
 from shared import evaluate
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-MDOEL_DIR = REPO_ROOT / "models"
+MODEL_DIR = REPO_ROOT / "models"
 
 LABEL_NAMES = {0: "poor", 1: "good", 2: "excellent"}
 
@@ -24,11 +24,12 @@ def build_args():
         help="csv file containing a bunch of customer comments"
     )
 
-    source.add_argument(
+    parser.add_argument(
         "-m",
         "--model",
         choices=['naive_bayes', 'logistic_regression'],
-        help="choose which model to demo"
+        default='naive_bayes',
+        help="choose which model to demo (default: naive_bayes)"
     )
 
     return parser.parse_args()
@@ -37,8 +38,11 @@ def build_args():
 if __name__ == '__main__':
     args = build_args()
 
-    model_file = MDOEL_DIR / f"{args.model}.joblib"
-    vectorizer_file = MDOEL_DIR / f"{args.model}_vectorizer.joblib"
+    model_file = MODEL_DIR / f"{args.model}.joblib"
+    vectorizer_file = MODEL_DIR / f"{args.model}_vectorizer.joblib"
+
+    # GaussianNB needs dense input; logistic regression accepts sparse matrices
+    dense = args.model == "naive_bayes"
 
     if args.comment_file:
         df = pd.read_csv(args.comment_file)
@@ -46,6 +50,7 @@ if __name__ == '__main__':
             df['input_text'],
             model_file=model_file,
             vectorizer_file=vectorizer_file,
+            dense=dense,
         )
         df['prediction_label'] = df['prediction'].map(LABEL_NAMES)
 
@@ -55,5 +60,6 @@ if __name__ == '__main__':
             [args.comment],
             model_file=model_file,
             vectorizer_file=vectorizer_file,
+            dense=dense,
         )[0]
         print(f"Prediction: {LABEL_NAMES[int(label)]}")
