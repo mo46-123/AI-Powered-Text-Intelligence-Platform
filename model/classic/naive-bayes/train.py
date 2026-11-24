@@ -1,33 +1,20 @@
-from sklearn.naive_bayes import GaussianNB, ComplementNB 
-import joblib
-import os
-from pathlib import Path
+import sys
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
+from pathlib import Path
 import pandas as pd 
-from evaluation import evaluate, report_metrices, to_dense
-import json
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import GaussianNB
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.append(str(REPO_ROOT))
 
-
-def load_data(name):
-    return pd.read_csv(REPO_ROOT / 'data' / f"{name}.csv")
+from model.classic.shared import evaluate, to_dense, save_cls, get_vocab, test
+from model.utils import report_metrices, load_data
 
 def train_cls(x, y):
     cls = GaussianNB()
     cls.fit(to_dense(x), y)
     return cls
-
-def get_vocab(k, x_full, tfidf_full):
-    # get idx of vocabs with heighest average tfidf
-    term_scores = np.asarray(x_full.mean(axis=0)).ravel()
-    top_idx = np.argsort(term_scores)[-k:]
-
-    # restore idx to vocab
-    idx_to_term = {i: t for t, i in tfidf_full.vocabulary_.items()}
-    return sorted(idx_to_term[i] for i in top_idx)
-
 
 def full_training(n_trial = 10, k_min=500, k_max=1500):
     tfidf_full = TfidfVectorizer(min_df=3)
@@ -76,13 +63,6 @@ def full_training(n_trial = 10, k_min=500, k_max=1500):
 
     return config[str(best_k)], best_model, best_vectorizer
 
-def test(cls, vectorizer=None, vectorizer_file=None):
-    test_df = load_data('test')
-
-    y_pred = evaluate(test_df['input_text'], cls,
-                      vectorizer=vectorizer, vectorizer_file=vectorizer_file)
-    return report_metrices(test_df['Sentiment'], y_pred)
-
 
 if __name__ == '__main__':
     # train 
@@ -93,15 +73,4 @@ if __name__ == '__main__':
     metrices = test(best_model, best_vectorizer)
 
     # save 
-    models_dir = REPO_ROOT / "models"
-    models_dir.mkdir(parents=True, exist_ok=True)
-
-    with open(models_dir / "naive_bayes_config.json", 'w') as f:
-        json.dump(best_config, f, indent=4)
-    
-    with open(models_dir / 'test_result.json', 'w') as f:
-        json.dump(metrices, f, indent=4)
-
-    joblib.dump(best_model, models_dir / 'naive_bayes.joblib')
-    joblib.dump(best_vectorizer, models_dir / 'naive_bayes_vectorizer.joblib')
-   
+    save_cls("naive_bayes", best_config, metrices, best_model, best_vectorizer)

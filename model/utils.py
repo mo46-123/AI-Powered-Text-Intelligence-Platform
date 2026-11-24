@@ -1,29 +1,9 @@
-from sklearn.naive_bayes import GaussianNB 
-from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
-import joblib
-from pathlib import Path
+import pandas as pd
 import numpy as np
+from pathlib import Path
+from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
 
-def to_dense(x):
-    return x.toarray() if hasattr(x, "toarray") else x
-
-def evaluate(x, model=None, model_file=None, vectorizer=None,
-             vectorizer_file=None, batch=True):
-    #load trained model
-    if model_file:
-        cls = joblib.load(model_file)
-    elif model is not None:
-        cls = model
-
-    if vectorizer_file:
-        tfidf = joblib.load(vectorizer_file)
-    elif vectorizer is not None:
-        tfidf = vectorizer
-
-    # get prediction
-    x = to_dense(tfidf.transform(x))
-    if not batch: x = np.expand_dims(x, axis=0)
-    return cls.predict(x)
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 def report_metrices(y_true, y_pred):
 
@@ -65,8 +45,8 @@ def report_metrices(y_true, y_pred):
     for name in ('f1', 'precision', 'recall'):
         values = metrics[name]
         print(f"{name.capitalize():<10} per-class {values['per_class']}  "
-              f"macro {values['macro']:.3f}  micro {values['micro']:.3f}  "
-              f"weighted {values['weighted']:.3f}")
+                f"macro {values['macro']:.3f}  micro {values['micro']:.3f}  "
+                f"weighted {values['weighted']:.3f}")
     print(f"{'Accuracy':<10} {metrics['accuracy']:.3f}")
 
     print(f"Confusion Matrix  labels {metrics['labels']}")
@@ -74,4 +54,7 @@ def report_metrices(y_true, y_pred):
 
     return metrics
 
-    
+def load_data(name):
+    return pd.read_csv(REPO_ROOT / 'data' / f"{name}.csv")
+
+

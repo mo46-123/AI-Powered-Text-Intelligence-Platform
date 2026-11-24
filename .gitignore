@@ -6,3 +6,4 @@ models/*.joblib
 data/
 test/
 models/
+han/
