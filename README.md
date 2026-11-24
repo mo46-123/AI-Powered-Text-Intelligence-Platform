@@ -152,3 +152,16 @@ MyDrive/
     - select upload to colab from menu
     - open `./model/fine-tuning/train.ipynb`
     - click run all
+    - 
+## Run the Streamlit app
+1. Install dependencies:
+```
+pip install -r requirements.txt
+```
+2. Download the Naive Bayes and Logistic Regression model files (see "Use Classic ML models" above)
+3. Start the app:
+```
+streamlit run app.py
+```
+4. Open http://localhost:8501, paste a review, and click **Predict** to see both models' predictions side by side.
+Live app: not deployed yet.
