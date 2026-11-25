@@ -89,16 +89,23 @@ python model/modern/fine-tuning/demo.py -m logistic regression -cf data/clean_re
 ## Train your own model 
 
 ### Getting data
-1. pre-prepare data
-```
-python make_sample.py     # 50,000-review sample (seed 46)
-python preprocess.py      # clean text, 3-class labels, remove duplicate texts
-python split_data.py      # stratified 70/10/20 train/val/test split
-python features.py        # BoW + TF-IDF features and saved vectorizers
-```
-You should get train 32,418 / val 4,632 / test 9,263. If your sizes match, you have the same split as the team.
+Our group sample uses random seed 46. Data files are not committed to Git.
 
-2. Make sure you have prepared the data like the following:
+1. Download `Reviews.csv` from https://www.kaggle.com/datasets/snap/amazon-fine-food-reviews and place it in `data/`.
+2. From the repo root, run these in order:
+
+```
+python data-processing/make_sample.py     # 50,000-review sample (seed 46)
+python data-processing/preprocess.py      # clean text, remove duplicate texts, 0/1/2 labels (poor/good/excellent)
+python data-processing/split_data.py      # stratified 70/10/20 train/val/test split
+python data-processing/features.py        # BoW + TF-IDF features and saved vectorizers
+```
+
+Expected sizes: 46,313 reviews after cleaning; train 32,418 / val 4,632 / test 9,263. If yours match, you have the same split as the team.
+
+Labels (`Sentiment` column): 0 = poor (1-2 stars), 1 = good (3-4 stars), 2 = excellent (5 stars).
+
+3. Make sure you have prepared the data like the following:
 
 ```text
 AI-Powered-Text-Intelligence-Platform/
@@ -108,7 +115,7 @@ AI-Powered-Text-Intelligence-Platform/
         |-val.csv
 ```
 
-3. If you want to train modern models 
+4. If you want to train modern models 
     - create `CSE 3521/data/` under MyDrive in google drive
     - upload `test.csv`, `train.csv`, and `val.csv` to that directory
 ```text
